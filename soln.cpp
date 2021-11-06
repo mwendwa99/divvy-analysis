@@ -4,6 +4,23 @@
 
 using namespace std;
 
+string ride_id;
+string rideable_type;
+string start_date;
+string start_time;
+string start_station_id;
+string start_station_name;
+string start_station_lat;
+string start_station_long;
+string end_date;
+string end_time;
+string end_station_id;
+string end_station_name;
+string end_station_lat;
+string end_station_long;
+string bike_id;
+string subscription_type;
+
 int main()
 {
     int rows = 0;
@@ -17,22 +34,22 @@ int main()
     // display rides total
     std::string rides;
 
-    // string ride_id;
-    // string rideable_type;
-    // string start_date;
-    // string start_time;
-    // string start_station_id;
-    // string start_station_name;
-    // string start_station_lat;
-    // string start_station_long;
-    // string end_date;
-    // string end_time;
-    // string end_station_id;
-    // string end_station_name;
-    // string end_station_lat;
-    // string end_station_long;
-    // string bike_id;
-    // string subscription_type;
+    string ride_id;
+    string rideable_type;
+    string start_date;
+    string start_time;
+    string start_station_id;
+    string start_station_name;
+    string start_station_lat;
+    string start_station_long;
+    string end_date;
+    string end_time;
+    string end_station_id;
+    string end_station_name;
+    string end_station_lat;
+    string end_station_long;
+    string bike_id;
+    string subscription_type;
 
     while (ip.good())
     {

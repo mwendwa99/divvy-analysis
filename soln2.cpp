@@ -18,6 +18,24 @@ is similar to text-type file management, except for a few modifications.*/
 
 using namespace std;
 
+// assign columns to variables
+string ride_id;
+string rideable_type;
+string start_date;
+string start_time;
+string start_station_id;
+string start_station_name;
+string start_station_lat;
+string start_station_long;
+string end_date;
+string end_time;
+string end_station_id;
+string end_station_name;
+string end_station_lat;
+string end_station_long;
+string member_casual;
+string weekday_weekend;
+
 // Utility functions getting distant between two map points
 // Attribution: https://www.geeksforgeeks.org/program-distance-two-points-earth/
 // converting degrees to radians
@@ -148,14 +166,6 @@ void distance_sample_rides()
         cout << "Error opening file" << endl;
         exit(1);
     }
-    // assign columns to variables
-    string ride_id;
-    string start_station_name;
-    string end_station_name;
-    string start_station_lat;
-    string start_station_long;
-    string end_station_lat;
-    string end_station_long;
 
     while (ip.good())
     {
@@ -172,6 +182,131 @@ void distance_sample_rides()
             getline(ip, end_station_lat, ',');
             getline(ip, end_station_long, ',');
             cout << "Distance between " << start_station_name << " and " << end_station_name << " is " << distance(stod(start_station_lat), stod(start_station_long), stod(end_station_lat), stod(end_station_long)) << " miles" << endl;
+        }
+
+        // calculate average distance
+        cout << "Average distance between all rides is " << distance(stod(start_station_lat), stod(start_station_long), stod(end_station_lat), stod(end_station_long)) / rows << " miles" << endl;
+
+        // display longest distance with
+        cout << "Longest distance is " << distance(stod(start_station_lat), stod(start_station_long), stod(end_station_lat), stod(end_station_long)) << " miles" << endl;
+    }
+
+    ip.close();
+}
+
+// function to Display percentage of members vs. casual riders
+void percentage_members_vs_casual()
+{
+    int rows = 0;
+    string rides;
+    ifstream ip("divvyridesampledata.csv");
+
+    if (!ip.is_open())
+    {
+        cout << "Error opening file" << endl;
+        exit(1);
+    }
+
+    while (ip.good())
+    {
+        getline(ip, rides, '\n');
+        rows++;
+        getline(ip, ride_id, ',');
+
+        //    get percentage of member_casual
+        int member_count = 0;
+        int casual_count = 0;
+        while (getline(ip, member_casual, ','))
+        {
+            if (member_casual == "1")
+            {
+                member_count++;
+            }
+            else
+            {
+                casual_count++;
+            }
+        }
+        // display percentage of members vs casual
+        cout << "Percentage of members vs. casual riders is " << member_count / (member_count + casual_count) * 100 << "%" << endl;
+    }
+
+    ip.close();
+}
+
+// function to geet weekday vs weekend usage
+void weekday_vs_weekend_usage()
+{
+    int rows = 0;
+    string rides;
+    ifstream ip("weekdayweekend.csv");
+
+    if (!ip.is_open())
+    {
+        cout << "Error opening file" << endl;
+        exit(1);
+    }
+
+    while (ip.good())
+    {
+        getline(ip, rides, '\n');
+        rows++;
+        getline(ip, ride_id, ',');
+
+        //    get weekday vs weekend usage
+        int weekday_count = 0;
+        int weekend_count = 0;
+        while (getline(ip, weekday_weekend, ','))
+        {
+            if (weekday_weekend == "1")
+            {
+                weekday_count++;
+            }
+            else
+            {
+                weekend_count++;
+            }
+        }
+        // get number of rides per hour
+        cout << "Percentage of rides per hour on weekdays is " << weekday_count / (weekday_count + weekend_count) * 100 << "%" << endl;
+        cout << "Percentage of rides per hour on weekends is " << weekend_count / (weekday_count + weekend_count) * 100 << "%" << endl;
+
+        // display average number of rides per hour
+        cout << "Average number of rides per hour is " << (weekday_count + weekend_count) / rows << endl;
+    }
+}
+
+// function to find closest station
+void closest_station()
+{
+    int rows = 0;
+    string rides;
+    ifstream ip("all_divvy_rides_september.csv");
+
+    if (!ip.is_open())
+    {
+        cout << "Error opening file" << endl;
+        exit(1);
+    }
+
+    while (ip.good())
+    {
+        getline(ip, rides, '\n');
+        rows++;
+        getline(ip, ride_id, ',');
+
+        //    get closest station
+        int closest_station_count = 0;
+        int closest_station_name;
+        while (getline(ip, start_station_name, ','))
+        {
+            getline(ip, end_station_name, ',');
+            getline(ip, start_station_lat, ',');
+            getline(ip, start_station_long, ',');
+            getline(ip, end_station_lat, ',');
+            getline(ip, end_station_long, ',');
+            closest_station_name = closest_station(stod(start_station_lat), stod(start_station_long));
+            cout << "Closest station to " << start_station_name << " is " << closest_station_name << endl;
         }
     }
 
@@ -229,36 +364,27 @@ int main(int argc, char *argv[])
         break;
 
     case '2':
-        // menu selection 2
-        char menu3;
-        std::cout << "\n select datafile: ";
-        std::cout << "\n========";
-        std::cout << "\n 1 - Small subset of data with 14 rides";
-        std::cout << "\n 2 - Week day vs weekend rides";
-        std::cout << "\n 3 - All September 2021 data";
-        std::cout << "\n Enter selection: ";
+        distance_sample_rides();
+        return 0;
+        break;
 
-        std::cin >> menu3;
-        switch (menu3)
-        {
-        case '1':
-            // Read divvyridesampledata.csv
-            distance_sample_rides();
-            return 0;
-            break;
+    case '3':
+        percentage_members_vs_casual();
+        return 0;
+        break;
 
-            // case '2':
-            //     // Read weekdayweekend.csv
-            //     count_weekday_vs_weekend_rides();
-            //     return 0;
-            //     break;
+    case '4':
+        weekday_vs_weekend_usage();
+        return 0;
+        break;
 
-            // case '3':
-            //     // Read all_divvy_rides_september.csv
-            //     display_all_rides();
-            //     return 0;
-            //     break;
-        }
+    case '5':
+        closest_station();
+        return 0;
+        break;
+
+    default:
+        std::cout << "Invalid selection";
         return 0;
         break;
     }
