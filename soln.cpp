@@ -40,17 +40,11 @@ int main()
         rows++;
         // getline(ip, ride_id, ',');
         // getline(ip, rideable_type, ',');
-        // getline(ip, start_date, ',');
-        // getline(ip, start_time, ',');
-        // getline(ip, start_station_id, ',');
-        // getline(ip, start_station_name, ',');
-        // getline(ip, start_station_lat, ',');
         // getline(ip, start_station_long, ',');
         // getline(ip, end_date, '\n');
 
         // total rides
         std::cout << "Total rides: " << rows << std::endl;
-        s
         // std::cout << "ride_id: " << ride_id << std::endl;
         // std::cout << "rideable_type: " << rideable_type << std::endl;
         // std::cout << "start_date: " << start_date << std::endl;
