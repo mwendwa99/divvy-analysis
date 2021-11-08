@@ -295,9 +295,8 @@ void closest_station()
         rows++;
         getline(ip, ride_id, ',');
 
-        //    get closest station
-        int closest_station_count = 0;
-        int closest_station_name;
+        // get the closest location
+        int closest_station = 0;
         while (getline(ip, start_station_name, ','))
         {
             getline(ip, end_station_name, ',');
@@ -305,9 +304,12 @@ void closest_station()
             getline(ip, start_station_long, ',');
             getline(ip, end_station_lat, ',');
             getline(ip, end_station_long, ',');
-            closest_station_name = closest_station(stod(start_station_lat), stod(start_station_long));
-            cout << "Closest station to " << start_station_name << " is " << closest_station_name << endl;
+            if (distance(stod(start_station_lat), stod(start_station_long), stod(end_station_lat), stod(end_station_long)) < distance(stod(start_station_lat), stod(start_station_long), stod(end_station_lat), stod(end_station_long)))
+            {
+                closest_station = distance(stod(start_station_lat), stod(start_station_long), stod(end_station_lat), stod(end_station_long));
+            }
         }
+        cout << "Closest station is " << closest_station << " miles" << endl;
     }
 
     ip.close();
